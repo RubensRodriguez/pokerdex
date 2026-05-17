@@ -25,6 +25,7 @@ const eslintConfig = [
           project: "./tsconfig.json",
         },
       },
+      "import/core-modules": ["server-only"],
     },
     rules: {
       "import/order": [

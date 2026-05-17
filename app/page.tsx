@@ -1,14 +1,26 @@
-export default function Home() {
+import { countUsers } from "@/lib/queries/users";
+
+export default async function Home() {
+  const userCount = await countUsers();
+
   return (
     <main className="flex min-h-screen items-center justify-center bg-bg">
-      <div className="flex items-center gap-3">
-        <ChipMark className="h-[22px] w-[22px] text-accent" />
-        <h1
-          className="font-sans font-semibold text-text"
-          style={{ fontSize: "28px", letterSpacing: "0.03em" }}
+      <div className="flex flex-col items-center gap-4">
+        <div className="flex items-center gap-3">
+          <ChipMark className="h-[22px] w-[22px] text-accent" />
+          <h1
+            className="font-sans font-semibold uppercase text-text"
+            style={{ fontSize: "28px", letterSpacing: "0.03em" }}
+          >
+            POKERDEX
+          </h1>
+        </div>
+        <p
+          className="font-mono text-muted"
+          style={{ fontSize: "13px", fontVariantNumeric: "tabular-nums" }}
         >
-          POKERDEX
-        </h1>
+          Users: {userCount}
+        </p>
       </div>
     </main>
   );
@@ -24,11 +36,12 @@ function ChipMark({ className }: { className?: string }) {
       aria-hidden="true"
     >
       <path
-        fillRule="evenodd"
-        clipRule="evenodd"
-        fill="currentColor"
-        d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2zm0 5.5a4.5 4.5 0 1 0 0 9 4.5 4.5 0 0 0 0-9z"
+        d="M 13.48 2.11 A 10 10 0 1 0 10.52 2.11"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
       />
+      <circle cx="12" cy="12" r="5" stroke="currentColor" strokeWidth="1.5" />
     </svg>
   );
 }
