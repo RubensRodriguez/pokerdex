@@ -1,0 +1,45 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Color palette — ui-context.md */
+  --bg: #000000;
+  --surface: #0a0a0c;
+  --surface-2: #111114;
+  --surface-3: #17171b;
+  --border: #1c1c20;
+  --border-2: #26262b;
+  --text: #ececeb;
+  --text-dim: #a4a39e;
+  --muted: #6e6d68;
+  --muted-2: #4a4a47;
+  --accent: #d4b056;
+  --accent-hi: #e4c576;
+  --accent-dim: rgba(212, 176, 86, 0.14);
+  --accent-line: rgba(212, 176, 86, 0.32);
+  --positive: #6cb787;
+  --positive-bg: rgba(108, 183, 135, 0.13);
+  --positive-bg-2: rgba(108, 183, 135, 0.22);
+  --negative: #e07070;
+  --negative-bg: rgba(224, 112, 112, 0.13);
+  --negative-bg-2: rgba(224, 112, 112, 0.22);
+
+  /* Density — comfortable defaults (ui-context.md "Spacing") */
+  --row-pad: 16px;
+  --card-pad: 22px;
+  --gap: 18px;
+}
+
+.pdx-screen[data-density="compact"] {
+  --row-pad: 10px;
+  --card-pad: 16px;
+  --gap: 12px;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
