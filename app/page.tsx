@@ -24,12 +24,11 @@ function ChipMark({ className }: { className?: string }) {
       aria-hidden="true"
     >
       <path
-        d="M 13.48 2.11 A 10 10 0 1 0 10.52 2.11"
-        stroke="currentColor"
-        strokeWidth="1.5"
-        strokeLinecap="round"
+        fillRule="evenodd"
+        clipRule="evenodd"
+        fill="currentColor"
+        d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2zm0 5.5a4.5 4.5 0 1 0 0 9 4.5 4.5 0 0 0 0-9z"
       />
-      <circle cx="12" cy="12" r="5" stroke="currentColor" strokeWidth="1.5" />
     </svg>
   );
 }
