@@ -1,7 +1,11 @@
+import { UserButton } from "@clerk/nextjs";
+import { currentUser } from "@clerk/nextjs/server";
+
 import { countUsers } from "@/lib/queries/users";
 
 export default async function Home() {
-  const userCount = await countUsers();
+  const [userCount, user] = await Promise.all([countUsers(), currentUser()]);
+  const email = user?.emailAddresses[0]?.emailAddress ?? "(no email)";
 
   return (
     <main className="flex min-h-screen items-center justify-center bg-bg">
@@ -15,12 +19,16 @@ export default async function Home() {
             POKERDEX
           </h1>
         </div>
-        <p
-          className="font-mono text-muted"
+        <div
+          className="flex flex-col items-center gap-2 font-mono text-muted"
           style={{ fontSize: "13px", fontVariantNumeric: "tabular-nums" }}
         >
-          Users: {userCount}
-        </p>
+          <p>Users: {userCount}</p>
+          <div className="flex items-center gap-2">
+            <span>Logged in as {email}</span>
+            <UserButton />
+          </div>
+        </div>
       </div>
     </main>
   );

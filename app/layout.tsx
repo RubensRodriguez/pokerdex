@@ -1,8 +1,9 @@
+import { ClerkProvider } from "@clerk/nextjs";
 import { Geist, JetBrains_Mono } from "next/font/google";
 
-import "./globals.css";
-
 import type { Metadata } from "next";
+
+import "./globals.css";
 
 const geist = Geist({
   subsets: ["latin"],
@@ -23,8 +24,10 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="it" className={`dark ${geist.variable} ${jetbrainsMono.variable}`}>
-      <body>{children}</body>
-    </html>
+    <ClerkProvider>
+      <html lang="it" className={`dark ${geist.variable} ${jetbrainsMono.variable}`}>
+        <body>{children}</body>
+      </html>
+    </ClerkProvider>
   );
 }
