@@ -1,6 +1,6 @@
 // All functions take userId first and run inside withUser(). No query against
 // `events` may run outside a withUser block (RLS contract, see architecture).
-import { and, desc, eq } from "drizzle-orm";
+import { and, asc, desc, eq } from "drizzle-orm";
 
 import { events } from "@/db/schema";
 import { withUser } from "@/db/with-user";
@@ -45,6 +45,33 @@ export async function getLastUpdate(
       balance: Number.parseFloat(rows[0].balance!),
       occurredAt: rows[0].occurredAt,
     };
+  });
+}
+
+// Returns all balance_update events for the user (no archived filter — archived
+// sites' history still contributes to the chart). Ordered by siteId, then
+// occurredAt asc so deriveNetPnlSeries can process per-site baselines correctly.
+// windowDays is accepted for API symmetry; we return all rows and let the chart
+// function slice the window (simplest correct approach per spec).
+export async function getBalanceUpdatesForChart(
+  userId: string,
+  _windowDays: number,
+): Promise<Array<{ siteId: string; balance: number; occurredAt: Date }>> {
+  return withUser(userId, async (tx) => {
+    const rows = await tx
+      .select({
+        siteId: events.siteId,
+        balance: events.balance,
+        occurredAt: events.occurredAt,
+      })
+      .from(events)
+      .where(and(eq(events.userId, userId), eq(events.type, "balance_update")))
+      .orderBy(asc(events.siteId), asc(events.occurredAt));
+    return rows.map((r) => ({
+      siteId: r.siteId,
+      balance: Number.parseFloat(r.balance!),
+      occurredAt: r.occurredAt,
+    }));
   });
 }
 

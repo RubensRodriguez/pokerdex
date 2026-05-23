@@ -8,7 +8,7 @@ import "server-only";
 import { count, eq } from "drizzle-orm";
 
 import { db } from "@/db";
-import { users } from "@/db/schema";
+import { users, type UserRow } from "@/db/schema";
 
 export async function countUsers(): Promise<number> {
   const [row] = await db.select({ value: count() }).from(users);
@@ -32,4 +32,9 @@ export async function createUserFromClerk(params: {
 
 export async function deleteUserFromClerk(clerkUserId: string): Promise<void> {
   await db.delete(users).where(eq(users.id, clerkUserId));
+}
+
+export async function getUser(userId: string): Promise<UserRow | null> {
+  const rows = await db.select().from(users).where(eq(users.id, userId)).limit(1);
+  return rows[0] ?? null;
 }
