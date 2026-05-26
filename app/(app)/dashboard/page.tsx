@@ -5,10 +5,11 @@ import { redirect } from "next/navigation";
 
 import { DashboardEmptyState } from "@/components/dashboard/DashboardEmptyState";
 import { PnlChart } from "@/components/dashboard/PnlChart";
+import { RecentActivitySection } from "@/components/dashboard/recent-activity-section";
 import { SitesSummaryCard } from "@/components/dashboard/SitesSummaryCard";
 import { TotalBankroll } from "@/components/dashboard/TotalBankroll";
 import { deriveNetPnlSeries } from "@/lib/chart";
-import { getBalanceUpdatesForChart } from "@/lib/queries/events";
+import { getBalanceUpdatesForChart, getRecentEvents } from "@/lib/queries/events";
 import { getCurrentBalances } from "@/lib/queries/sites";
 import { getUser } from "@/lib/queries/users";
 import { siteColor } from "@/lib/site-colors";
@@ -28,7 +29,11 @@ export default async function DashboardPage() {
   const { userId } = await auth();
   if (!userId) redirect("/sign-in");
 
-  const [user, sites] = await Promise.all([getUser(userId), getCurrentBalances(userId)]);
+  const [user, sites, recentEvents] = await Promise.all([
+    getUser(userId),
+    getCurrentBalances(userId),
+    getRecentEvents(userId),
+  ]);
 
   if (sites.length === 0) {
     return (
@@ -123,6 +128,7 @@ export default async function DashboardPage() {
           <SitesSummaryCard sites={decorated} count={sites.length} />
         </div>
       </div>
+      <RecentActivitySection events={recentEvents} timezone={timezone} />
     </main>
   );
 }
